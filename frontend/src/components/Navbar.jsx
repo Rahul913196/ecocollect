@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router-dom'
+import { NavLink, Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext.jsx'
 
 const styles = {
@@ -64,11 +64,11 @@ export default function Navbar() {
         </Link>
 
         <div style={styles.links}>
-          <Link to="/">Home</Link>
+          <NavLink to="/" end className="nav-link">Home</NavLink>
 
           {!user && (
             <>
-              <Link to="/login">Log in</Link>
+              <NavLink to="/login" className="nav-link">Log in</NavLink>
               <Link to="/register" className="btn-primary" style={{ padding: '0.5rem 1rem' }}>
                 Get started
               </Link>
@@ -77,12 +77,12 @@ export default function Navbar() {
 
           {user && (
             <>
-              <Link to={dashboardPath}>Dashboard</Link>
+              <NavLink to={dashboardPath} className="nav-link">Dashboard</NavLink>
               {user.role === 'user' && (
                 <>
-                  <Link to="/sell-plastic">Sell plastic</Link>
-                  <Link to="/my-requests">My requests</Link>
-                  <Link to="/rewards">Rewards</Link>
+                  <NavLink to="/sell-plastic" className="nav-link">Sell plastic</NavLink>
+                  <NavLink to="/my-requests" className="nav-link">My requests</NavLink>
+                  <NavLink to="/rewards" className="nav-link">Rewards</NavLink>
                   <span style={styles.points}>{user.reward_points} pts</span>
                 </>
               )}
