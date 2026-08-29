@@ -1,6 +1,10 @@
 from datetime import datetime, timedelta, timezone
 from passlib.context import CryptContext
 from jose import jwt, JWTError
+
+from eth_account import Account
+from eth_account.messages import encode_defunct
+
 from app.config import settings
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -30,3 +34,17 @@ def decode_access_token(token: str) -> dict | None:
         )
     except JWTError:
         return None
+
+
+
+
+def verify_wallet_signature(address: str, message: str, signature: str) -> bool:
+    """Recover the signer address from a personal_sign signature and confirm
+    it matches the address the user claims to own. This proves wallet
+    ownership without ever touching a private key or sending a transaction."""
+    try:
+        encoded = encode_defunct(text=message)
+        recovered = Account.recover_message(encoded, signature=signature)
+        return recovered.lower() == address.lower()
+    except Exception:
+        return False

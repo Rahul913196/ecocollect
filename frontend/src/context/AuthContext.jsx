@@ -47,8 +47,33 @@ export function AuthProvider({ children }) {
     setUser(null)
   }
 
+  const connectWallet = async () => {
+    if (typeof window.ethereum === 'undefined') {
+      throw new Error('MetaMask not found. Install the MetaMask extension to connect a wallet.')
+    }
+    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' })
+    const address = accounts[0]
+    if (!address) throw new Error('No wallet account returned.')
+
+    const message = `Link this wallet to my EcoCollect account (${user?.email ?? ''}) — ${Date.now()}`
+    const signature = await window.ethereum.request({
+      method: 'personal_sign',
+      params: [message, address],
+    })
+
+    const res = await api.post('/auth/wallet', { address, message, signature })
+    setUser(res.data)
+    return res.data
+  }
+
+  const disconnectWallet = async () => {
+    const res = await api.delete('/auth/wallet')
+    setUser(res.data)
+    return res.data
+  }
+
   return (
-    <AuthContext.Provider value={{ user, setUser, loading, login, register, logout }}>
+    <AuthContext.Provider value={{ user, setUser, loading, login, register, logout, connectWallet, disconnectWallet }}>
       {children}
     </AuthContext.Provider>
   )

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import api from '../api/axios.js'
 import { useAuth } from '../context/AuthContext.jsx'
 import RequestCard from '../components/RequestCard.jsx'
+import WalletConnect from '../components/WalletConnect.jsx'
 
 export default function UserDashboard() {
   const { user } = useAuth()
@@ -32,7 +33,7 @@ export default function UserDashboard() {
         <Link to="/sell-plastic" className="btn-primary">+ New pickup request</Link>
       </div>
 
-      <div className="grid grid-3" style={{ margin: '2rem 0' }}>
+      <div className="grid grid-4" style={{ margin: '2rem 0' }}>
         <div className="card">
           <p style={{ margin: 0, color: '#6B7268', fontSize: '0.85rem', fontWeight: 700 }}>REWARD POINTS</p>
           <h2 style={{ margin: '0.3rem 0 0' }}>{user?.reward_points ?? 0}</h2>
@@ -45,6 +46,7 @@ export default function UserDashboard() {
           <p style={{ margin: 0, color: '#6B7268', fontSize: '0.85rem', fontWeight: 700 }}>COMPLETED PICKUPS</p>
           <h2 style={{ margin: '0.3rem 0 0' }}>{completedCount}</h2>
         </div>
+        <WalletConnect />
       </div>
 
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>

@@ -36,6 +36,13 @@ class UserOut(BaseModel):
     role: Role
     phone: Optional[str] = None
     reward_points: int = 0
+    wallet_address: Optional[str] = None
+
+
+class WalletConnectIn(BaseModel):
+    address: str
+    message: str
+    signature: str
 
 
 # ---------- Plastic Pickup Requests ----------
